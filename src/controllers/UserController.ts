@@ -6,15 +6,23 @@ async function createUser(data: {
   email: string;
   password: string;
 }) {
-  const salt = await bcrypt.genSalt(10);
-  data.password = await bcrypt.hash(data.password, salt);
-  const user = await sql`
+  if (
+    data.email !== undefined &&
+    data.password !== undefined &&
+    data.username !== undefined
+  ) {
+    const salt = await bcrypt.genSalt(10);
+    data.password = await bcrypt.hash(data.password, salt);
+    const user = await sql`
     insert into users(username, email, password)
     values(${data.username}, ${data.email}, ${data.password})
     returning username
   `;
 
-  return { status: 'User created', user };
+    return true;
+  } else {
+    return false;
+  }
 }
 
 async function verifyUser(data: { username: string; password: string }) {
