@@ -1,5 +1,5 @@
 import express from 'express';
-import { getData } from './database/queries';
+import { subforumsRoute } from './routes/subforumRoute';
 
 const app = express();
 const PORT = 3000;
@@ -7,10 +7,10 @@ const PORT = 3000;
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-  const data = await getData();
-  console.log(data[0]);
   res.json({ status: 'Welcome' });
 });
+
+app.use('/', subforumsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}/`);

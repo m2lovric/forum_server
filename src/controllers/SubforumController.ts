@@ -1,4 +1,4 @@
-import sql from './db';
+import sql from '../config/db';
 
 async function getData() {
   const subforums = await sql`
