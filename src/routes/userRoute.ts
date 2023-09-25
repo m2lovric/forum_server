@@ -2,7 +2,7 @@ import express from 'express';
 import { createUser, verifyUser } from '../controllers/UserController';
 import { User } from '../types/user';
 
-const userRoute = express.Router();
+export const userRoute = express.Router();
 
 userRoute.post('/register', async (req, res) => {
   const data: User = req.body;
@@ -25,4 +25,3 @@ userRoute.post('/login', async (req, res) => {
     res.status(401).json({ status: 'Invalid credentials' });
   }
 });
-export { userRoute };

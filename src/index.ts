@@ -1,6 +1,5 @@
 import express from 'express';
-import { subforumsRoute } from './routes/subforumRoute';
-import { userRoute } from './routes/userRoute';
+import { subforumsRoute, userRoute, postsRoute } from './routes/routes';
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +19,7 @@ app.get('/', async (req, res) => {
 
 app.use('/api', subforumsRoute);
 app.use('/api', userRoute);
+app.use('/api', postsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}/`);
