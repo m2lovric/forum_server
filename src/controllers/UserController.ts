@@ -1,11 +1,9 @@
 import sql from '../config/db';
 import bcrypt from 'bcrypt';
+import { User } from '../types/user';
+import postgres from 'postgres';
 
-async function createUser(data: {
-  username: string;
-  email: string;
-  password: string;
-}) {
+async function createUser(data: User) {
   if (
     data.email !== undefined &&
     data.password !== undefined &&
@@ -25,14 +23,12 @@ async function createUser(data: {
   }
 }
 
-async function verifyUser(data: { username: string; password: string }) {
+async function verifyUser(data: User) {
   const user = await sql`
     select * from users
     where ${data.username}=username
   `;
 
-  console.log(user[0].password);
-  console.log(data.password);
   return await bcrypt.compare(data.password, user[0].password);
 }
 
