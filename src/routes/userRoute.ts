@@ -1,11 +1,7 @@
 import express from 'express';
 import { createUser, verifyUser } from '../controllers/UserController';
+import { User } from '../types/user';
 
-interface User {
-  username: string;
-  email: string;
-  password: string;
-}
 const userRoute = express.Router();
 
 userRoute.post('/register', async (req, res) => {
