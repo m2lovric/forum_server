@@ -1,7 +1,6 @@
 import sql from '../config/db';
 import bcrypt from 'bcrypt';
 import { User } from '../types/user';
-import postgres from 'postgres';
 
 async function createUser(data: User) {
   if (
