@@ -1,6 +1,10 @@
 import sql from '../config/db';
 import bcrypt from 'bcrypt';
 import { User } from '../types/user';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 async function createUser(data: User) {
   if (
@@ -28,7 +32,18 @@ async function verifyUser(data: User) {
     where ${data.username}=username
   `;
 
-  return await bcrypt.compare(data.password, user[0].password);
-}
+  if (await bcrypt.compare(data.password, user[0].password)) {
+    const token = jwt.sign(
+      { username: data.username },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: '1h',
+      }
+    );
 
+    return token;
+  } else {
+    return false;
+  }
+}
 export { createUser, verifyUser };

@@ -3,21 +3,20 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export interface UserAuth extends express.Request {
-  user: string | jwt.JwtPayload;
+export interface myUser extends express.Request {
+  user: { username: string };
 }
 
-type jwtAuthParams = {
-  req: UserAuth;
-  res: express.Response;
-  next: express.NextFunction;
-};
+export function jwtAuth(
+  req: myUser,
+  res: express.Response,
+  next: express.NextFunction
+) {
+  const { token } = req.cookies;
 
-export async function jwtAuth({ req, res, next }: jwtAuthParams) {
-  const token = req.cookies.token;
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET as string);
-    req.user = user;
+    req.user = user as { username: string };
     next();
   } catch (error) {
     res.clearCookie('token');

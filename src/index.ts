@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { subforumsRoute, userRoute, postsRoute } from './routes/routes';
-import { getCookie, jwtAuth } from './middleware/jwtAuth';
+import { jwtAuth } from './middleware/jwtAuth';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -32,9 +32,9 @@ app.get('/', async (req, res) => {
   res.json({ status: 'Welcome' });
 });
 
-app.use('/api', subforumsRoute);
 app.use('/api', userRoute);
-app.use('/api', getCookie, postsRoute);
+app.use('/api', jwtAuth, postsRoute);
+app.use('/api', subforumsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}/`);
